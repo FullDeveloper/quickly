@@ -1,6 +1,8 @@
 package com.zrbmyself.quickly.helper;
 
 import com.zrbmyself.quickly.annotation.Aspect;
+import com.zrbmyself.quickly.annotation.Service;
+import com.zrbmyself.quickly.annotation.Transaction;
 import com.zrbmyself.quickly.proxy.Proxy;
 import com.zrbmyself.quickly.proxy.ProxyManager;
 import org.slf4j.Logger;
@@ -58,6 +60,12 @@ public final class AopHelper {
      */
     private static Map<Class<?>, Set<Class<?>>> createProxyMap() {
         Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap<>();
+        addAspectProxy(proxyMap);
+        addTransactionProxy(proxyMap);
+        return proxyMap;
+    }
+
+    private static void addAspectProxy(Map<Class<?>, Set<Class<?>>> proxyMap) {
         Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(Aspect.class);
         for (Class<?> proxyClass : proxyClassSet) {
             if (proxyClass.isAnnotationPresent(Aspect.class)) {
@@ -66,7 +74,13 @@ public final class AopHelper {
                 proxyMap.put(proxyClass, targetClassSet);
             }
         }
-        return proxyMap;
+    }
+
+    private static void addTransactionProxy(Map<Class<?>, Set<Class<?>>> proxyMap){
+        Set<Class<?>> serviceClassSet = ClassHelper.getClassSetByAnnotation(Service.class);
+        proxyMap.put(Transaction.class,serviceClassSet);
+
+
     }
 
     /**
