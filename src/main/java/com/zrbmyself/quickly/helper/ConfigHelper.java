@@ -43,4 +43,9 @@ public final class ConfigHelper {
     public static String getAppJspPath() {
         return PropsUtil.getString(CONFIG_PROPS, ConfigConstant.APP_JSP_PATH,"/WEB-INF/view/");
     }
+
+    public static int getAppUploadLimit() {
+        return PropsUtil.getInt(CONFIG_PROPS, ConfigConstant.APP_UPLOAD_LIMIT,10);
+
+    }
 }

@@ -43,13 +43,23 @@ public class Request {
         this.requestPath = requestPath;
     }
 
+
     @Override
     public boolean equals(Object o) {
-        return EqualsBuilder.reflectionEquals(this,o);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Request request = (Request) o;
+
+        if (requestMethod != null ? !requestMethod.equals(request.requestMethod) : request.requestMethod != null)
+            return false;
+        return requestPath != null ? requestPath.equals(request.requestPath) : request.requestPath == null;
     }
 
     @Override
     public int hashCode() {
-       return HashCodeBuilder.reflectionHashCode(this);
+        int result = requestMethod != null ? requestMethod.hashCode() : 0;
+        result = 31 * result + (requestPath != null ? requestPath.hashCode() : 0);
+        return result;
     }
 }
